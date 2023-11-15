@@ -13,6 +13,8 @@
 // struct Task *OsTasksPCB[MAX_TASKS];
 // struct Resource *OsResourcesPCB[MAX_RESOURCES];
 
+ResourceType GlobalResID;
+
 StatusType GetResource(ResourceType ResID)
 {
     StatusType StatusMsg = E_OK;
@@ -50,6 +52,9 @@ StatusType GetResource(ResourceType ResID)
 
 StatusType ReleaseResource(ResourceType ResID)
 {
+	GlobalResID = ResID;
+	SAVECTX(16);
+	ResID = GlobalResID;
     StatusType StatusMsg = E_OK;
 
     // validate that the reuqest is from and ISR
@@ -93,11 +98,13 @@ StatusType ReleaseResource(ResourceType ResID)
 
                 OsResourcesPCB[ResID]->Resource_Owner = INVALID_TASK;
 
-                if (OsTasksPCB[RunningTaskID]->F_PREEM == TASK_FULL)
-                {
                 	OS_SortByPriority();
-                    OS_Schedule();
-                }
+                	 OS_Schedule();
+
+//                if (OsTasksPCB[RunningTaskID]->F_PREEM == TASK_FULL)
+//                {
+//                    OS_Schedule();
+//                }
             }
         }
     }
