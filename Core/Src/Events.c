@@ -9,7 +9,7 @@
 #include <string.h>
 
 
-
+EventMaskType GlobalEventMask;
 StatusType SetEvent(TaskType TaskID, EventMaskType ActivatedEvents)
 {
 
@@ -55,7 +55,9 @@ StatusType SetEvent(TaskType TaskID, EventMaskType ActivatedEvents)
 
 StatusType WaitEvent(EventMaskType EventMask)
 {
+	GlobalEventMask = EventMask;
 	SAVECTX(56);
+	EventMask = GlobalEventMask;
 //	SYSTEM_STACK;
 	StatusType StatusMsg = E_OK;
     if (OsTasksPCB[RunningTaskID]->Extended == 0)
