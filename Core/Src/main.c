@@ -59,18 +59,20 @@ void Task1Func()
 	y = 6;
 	z = 9;
 
-	GetResource(R1);
+	uint8_t st;
 
-	ActivateTask(Task2);
+	st = GetResource(R1);
+
+	st =ActivateTask(Task2);
 
 	int a;
 	a = x + y;
 
-	ReleaseResource(R1);
+	st = ReleaseResource(R1);
 
 	x= a + z;
 
-	TerminateTask();
+	st = TerminateTask();
 
 
 	//WaitEvent(Event1);
@@ -103,7 +105,8 @@ void Task2Func()
 //	WaitEvent(Event1);
 //	int y;
 //	y = x;
-	TerminateTask();
+	uint8_t st;
+	st = TerminateTask();
 }
 void Task3Func()
 {
@@ -120,7 +123,7 @@ void IdleFunc()
 	x=50;
 	y=10;
 	z=99;
-	ActivateTask(Task1);
+	uint8_t st = ActivateTask(Task1);
 	int f ;
 	f = y + x;
 	//SetEvent(Task2,Event1);
@@ -140,6 +143,11 @@ void IdleFunc()
   * @brief  The application entry point.
   * @retval int
   */
+//int temp10()
+//{
+//	return 10;
+//}
+
 int main(void)
 {
 
@@ -165,6 +173,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
+ // int x  = temp10();
 
       StartOS(OSDEFAULTAPPMODE);
 //     GetTaskID(&test);

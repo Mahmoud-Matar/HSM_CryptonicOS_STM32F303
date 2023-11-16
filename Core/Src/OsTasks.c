@@ -53,6 +53,7 @@ void OS_TerminateTask(void)
 
 void OS_Schedule(void)
 {
+	PreTaskID=RunningTaskID;
 	if (RunningTaskID == INVALID_TASK)
 	{
 		Ready_Queue.Head->task->Started = START_T;
@@ -86,15 +87,15 @@ void OS_Schedule(void)
 //			ContextSwitch(Ready_Queue.Head->task->ID);
 			RunningTaskID = Ready_Queue.Head->task->ID;
 			Ready_Queue.Head->task->State = RUNNING;
-			if(OsTasksPCB[RunningTaskID]->first ==0)
-			{
-				OsTasksPCB[RunningTaskID]->first = 1;
-				LOADCTX_FIRST;
-			}
-			else
-			{
-				LOADCTX;
-			}
+//			if(OsTasksPCB[RunningTaskID]->first ==0)
+//			{
+//				OsTasksPCB[RunningTaskID]->first = 1;
+//				//LOADCTX_FIRST;
+//			}
+//			else
+//			{
+//			//	LOADCTX;
+//			}
 
 //			if(OsTasksPCB[RunningTaskID]->first ==0)
 //			{
@@ -111,10 +112,10 @@ void OS_Schedule(void)
 			// load context for next task from stack
 			// change pc
 		}
-		if (Ready_Queue.Head->task->Priority == OsTasksPCB[RunningTaskID]->Priority)
-		{
-			LOADCTX;
-		}
+//		if (Ready_Queue.Head->task->Priority == OsTasksPCB[RunningTaskID]->Priority)
+//		{
+//			LOADCTX;
+//		}
 	}
 return;
 }

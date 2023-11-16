@@ -66,8 +66,8 @@ StatusType WaitEvent(EventMaskType EventMask)
         {
             ErrorHook(E_OS_STATE);
         }
-        LOADCTX;
-        return E_OS_ACCESS;
+
+        StatusMsg = E_OS_ACCESS;
     }
 
     if (OsTasksPCB[RunningTaskID]->Reasourses_Occupied > 0)
@@ -76,8 +76,7 @@ StatusType WaitEvent(EventMaskType EventMask)
         {
             ErrorHook(E_OS_RESOURCE);
         }
-        LOADCTX;
-        return E_OS_RESOURCE;
+        StatusMsg = E_OS_RESOURCE;
     }
 
     // E_OS_CALLEVEL
@@ -86,8 +85,7 @@ StatusType WaitEvent(EventMaskType EventMask)
         // if(OsTasksPCB[TaskID]->EventMask.Configured_Events & OsTasksPCB[TaskID]->EventMask.Event_State & OsTasksPCB[TaskID]->EventMask.Event_Waiting)
         if (EventMask & OsTasksPCB[RunningTaskID]->EventMask.Event_State)
         {
-        	 LOADCTX;
-            return E_OK;
+        	StatusMsg = E_OK;
         }
         else
         {
@@ -100,7 +98,16 @@ StatusType WaitEvent(EventMaskType EventMask)
     }
     // delete from ready queue
      // schedule next task
-    LOADCTX;
+    OsTasksPCB[PreTaskID]->retStatus = StatusMsg;
+    	if(OsTasksPCB[RunningTaskID]->first ==0)
+    						{
+    							OsTasksPCB[RunningTaskID]->first = 1;
+    							LOADCTX_FIRST;
+    						}
+    						else
+    						{
+    							LOADCTX;
+    						}
     return E_OK;
 }
 

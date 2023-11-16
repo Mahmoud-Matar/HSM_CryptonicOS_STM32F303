@@ -112,5 +112,15 @@ StatusType ReleaseResource(ResourceType ResID)
     {
         ErrorHook(StatusMsg);
     }
+    OsTasksPCB[PreTaskID]->retStatus = StatusMsg;
+    	if(OsTasksPCB[RunningTaskID]->first ==0)
+    						{
+    							OsTasksPCB[RunningTaskID]->first = 1;
+    							LOADCTX_FIRST;
+    						}
+    						else
+    						{
+    							LOADCTX;
+    						}
     return StatusMsg;
 }

@@ -11,6 +11,7 @@
 
 
 TaskType RunningTaskID=INVALID_TASK;
+TaskType PreTaskID = INVALID_TASK;
 uint8_t Queue_Size;
 struct Ready_List Ready_Queue;
 struct Ready_Entry Ready_Entries[MAX_TASKS];

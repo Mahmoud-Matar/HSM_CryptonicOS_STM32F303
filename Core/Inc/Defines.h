@@ -46,7 +46,7 @@
 
 //#define SAVECTX __asm volatile(	"ADD sp, #16;" "PUSH {lr};"  "MOV  %0, sp \n\t" :"=r" (OsTasksPCB[RunningTaskID]->sp) )
 #define SAVECTX(indent) __asm volatile(	"ADD sp, %1;" "PUSH {lr};"  "MOV  %0, sp \n\t"  "SUB r7 , #4"  :"=r" (OsTasksPCB[RunningTaskID]->sp) :"r" (indent) )
-#define LOADCTX __asm volatile( "MOV sp, %0 \n\t" "POP {lr};" "ADD sp,#8;" "MOV r7,sp;" "BX lr;": : "r" (OsTasksPCB[RunningTaskID]->sp) : "memory");
+#define LOADCTX __asm volatile( "MOV sp, %0 \n\t" "POP {lr};" "ADD sp,#8;" "MOV r7,sp;" "MOV r0,%1;" "BX lr;": : "r" (OsTasksPCB[RunningTaskID]->sp),"r" (OsTasksPCB[RunningTaskID]->retStatus) : "memory");
 #define LOADCTX_FIRST __asm volatile( "MOV sp, %0 \n\t" "BX %1;": : "r" (&OsTasksPCB[RunningTaskID]->sp), "r"(OsTasksPCB[RunningTaskID]->address) : "memory");
 #define SYSTEM_STACK __asm volatile( "MOV sp, %0 \n\t" "MOV r7, %0 \n\t": : "r" (SYS_SP) : "memory");
 
@@ -146,6 +146,7 @@ struct Task
 
 	void* SP; //Stack_Pointer
     uint8_t Started;
+    StatusType retStatus;
 	// BAAAD WARNING FROM HERE here 
 
 };

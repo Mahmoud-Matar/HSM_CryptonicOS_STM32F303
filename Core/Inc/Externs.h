@@ -12,6 +12,7 @@ extern uint8_t Active_Hooks;
 extern TaskType RunningTaskID;
 
 
+extern TaskType PreTaskID;
 extern uint8_t Queue_Size;
 
 extern struct Ready_List Ready_Queue;

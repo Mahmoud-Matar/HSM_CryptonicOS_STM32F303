@@ -36,7 +36,16 @@ StatusType ActivateTask(TaskType TaskID)
 			//ErrorHook(StatusMsg);
 		}
 	}
-	//LOADCTX;
+	OsTasksPCB[PreTaskID]->retStatus = StatusMsg;
+	if(OsTasksPCB[RunningTaskID]->first ==0)
+						{
+							OsTasksPCB[RunningTaskID]->first = 1;
+							LOADCTX_FIRST;
+						}
+						else
+						{
+							LOADCTX;
+						}
 	return E_OK;
 }
 
@@ -45,6 +54,7 @@ StatusType TerminateTask(void)
 	// to be continued later, i.e to free reasourses
 //	SAVECTX;
 //	SYSTEM_STACK;
+
 	StatusType StatusMsg = E_OK;
 
 	if (OsTasksPCB[RunningTaskID]->Reasourses_Occupied != 0)
@@ -75,7 +85,7 @@ StatusType ChainTask(TaskType TaskID)
 		{
 			ErrorHook(StatusMsg);
 		}
-		return StatusMsg;
+
 	}
 	if (OsTasksPCB[RunningTaskID]->Reasourses_Occupied != 0)
 	{
@@ -84,7 +94,7 @@ StatusType ChainTask(TaskType TaskID)
 		{
 			ErrorHook(StatusMsg);
 		}
-		return StatusMsg;
+
 	}
 	if ((Active_Hooks & PostTaskhook) != 0)
 		{
@@ -110,7 +120,7 @@ StatusType ChainTask(TaskType TaskID)
 		{
 			ErrorHook(StatusMsg);
 		}
-		return StatusMsg;
+
 	}
 
 	if (OsTasksPCB[TaskID]->State == SUSPENDED) // if task is suspended
@@ -122,12 +132,22 @@ StatusType ChainTask(TaskType TaskID)
 			{
 				ErrorHook(StatusMsg);
 			}
-			return StatusMsg;
+
 		}
 		OS_ActivateTask(TaskID);
 		StatusMsg = E_OK;
-		return StatusMsg;
+
 	}
+	OsTasksPCB[PreTaskID]->retStatus = StatusMsg;
+	if(OsTasksPCB[RunningTaskID]->first ==0)
+						{
+							OsTasksPCB[RunningTaskID]->first = 1;
+							LOADCTX_FIRST;
+						}
+						else
+						{
+							LOADCTX;
+						}
 	return StatusMsg;
 }
 
