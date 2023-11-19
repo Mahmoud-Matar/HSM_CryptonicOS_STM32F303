@@ -175,6 +175,10 @@ int main(void)
 
  // int x  = temp10();
 
+
+
+
+
       StartOS(OSDEFAULTAPPMODE);
 //     GetTaskID(&test);
 //      ActivateTask(Task1);

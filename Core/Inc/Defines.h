@@ -43,13 +43,19 @@
 #define PostTaskhook 0b00000100
 #define Startuphook  0b00001000
 #define Shutdownhook 0b00010000
+#define INVALID_HOOK 255
+
+
+
 
 //#define SAVECTX __asm volatile(	"ADD sp, #16;" "PUSH {lr};"  "MOV  %0, sp \n\t" :"=r" (OsTasksPCB[RunningTaskID]->sp) )
 #define SAVECTX(indent) __asm volatile(	"ADD sp, %1;" "PUSH {lr};"  "MOV  %0, sp \n\t"  "SUB r7 , #4"  :"=r" (OsTasksPCB[RunningTaskID]->sp) :"r" (indent) )
 #define LOADCTX __asm volatile( "MOV sp, %0 \n\t" "POP {lr};" "ADD sp,#8;" "MOV r7,sp;" "MOV r0,%1;" "BX lr;": : "r" (OsTasksPCB[RunningTaskID]->sp),"r" (OsTasksPCB[RunningTaskID]->retStatus) : "memory");
 #define LOADCTX_FIRST __asm volatile( "MOV sp, %0 \n\t" "BX %1;": : "r" (&OsTasksPCB[RunningTaskID]->sp), "r"(OsTasksPCB[RunningTaskID]->address) : "memory");
 #define SYSTEM_STACK __asm volatile( "MOV sp, %0 \n\t" "MOV r7, %0 \n\t": : "r" (SYS_SP) : "memory");
-
+#define CS_ON  __asm volatile( "SVC #0;");
+#define CS_OFF __asm volatile( "CPSIE i;" "MRS r10, CONTROL;" "ORR r10, r10, #1;" "MSR CONTROL, r10;");
+#define USER_THREAD __asm volatile( "MRS r10, CONTROL;" "ORR r10, r10, #1;" "MSR CONTROL, r10;");
 
 
 
@@ -104,6 +110,13 @@ typedef struct {
 } AlarmType;
 // END ALARMS // 
 
+//ISRs//
+
+#define INVALID_ISR 255
+
+typedef uint32_t ISRType;
+
+//ISRs//
 
 struct TaskContext
 {
@@ -164,6 +177,19 @@ struct Ready_List
 	struct Ready_Entry *Tail;
 };
 
+struct ISR
+{
+
+	ISRType ID; //id of task
+	uint8_t Priority; //current priority of task
+	ISRType Category;
+
+	struct Resource *Needed_Resources[MAX_RESOURCES];
+
+
+	ResourceType Prev_Resource;
+
+};
 
 
  #endif

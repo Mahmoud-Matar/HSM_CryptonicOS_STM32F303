@@ -10,6 +10,7 @@
 extern struct Task* OsTasksPCB[MAX_TASKS];
 extern uint8_t Active_Hooks;
 extern TaskType RunningTaskID;
+extern ISRType Running_ISR_ID;
 
 
 extern TaskType PreTaskID;

@@ -149,7 +149,11 @@ void SVC_Handler(void)
 
   /* USER CODE END SVCall_IRQn 0 */
   /* USER CODE BEGIN SVCall_IRQn 1 */
-
+	__asm volatile( "CPSID i;"
+					"MRS r10, CONTROL;"
+			  	  	"BIC r10, r10, #1;"
+			  	  	"MSR CONTROL, r10;"
+			   	   );
 
 }
 
