@@ -8,6 +8,7 @@
 
 // Tasks Things
 extern struct Task* OsTasksPCB[MAX_TASKS];
+extern struct ISR* ISRPCB[MAX_ISRs];
 extern uint8_t Active_Hooks;
 extern TaskType RunningTaskID;
 extern ISRType Running_ISR_ID;

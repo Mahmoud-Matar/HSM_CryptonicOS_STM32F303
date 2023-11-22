@@ -7,7 +7,7 @@
 #include "OSExecutionControlConfig.h"
 #include "ResourceConfig.h"
 #include "AlarmsConfig.h"
-
+#include "ISRConfig.h"
 #define INVALID_TASK MAX_TASKS
 
 #define RUNNING 1

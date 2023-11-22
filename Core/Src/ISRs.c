@@ -27,14 +27,43 @@ void DisableAllInterrupts(void)
 }
 void ResumeAllInterrupts(void)
 {
-
+	CS_ON
+	for(int i =0;i<MAX_ISRs;i++)
+	{
+		HAL_NVIC_ClearPendingIRQ(i);
+	}
+	CS_OFF
 }
 void SuspendAllInterrupts(void)
 {
+	CS_ON
+	for(int i =0;i<MAX_ISRs;i++)
+	{
+		HAL_NVIC_SetPendingIRQ(i);
+	}
+	CS_OFF
 }
 void ResumeOSInterrupts(void)
 {
+	CS_ON
+	for(int i =0;i<MAX_ISRs;i++)
+	{
+		if(ISRPCB[i]->Category == 2)
+		{
+			HAL_NVIC_ClearPendingIRQ(i);
+		}
+	}
+	CS_OFF
 }
 void SuspendOSInterrupts (void)
 {
+	CS_ON
+	for(int i =0;i<MAX_ISRs;i++)
+	{
+		if(ISRPCB[i]->Category == 2)
+		{
+			HAL_NVIC_SetPendingIRQ(i);
+		}
+	}
+	CS_OFF
 }

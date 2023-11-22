@@ -5,7 +5,7 @@
 #define ISR_CAT_1 0
 #define ISR_CAT_2 1
 
-#define MAX_ISRs 10
+#define MAX_ISRs 85
 
 
 

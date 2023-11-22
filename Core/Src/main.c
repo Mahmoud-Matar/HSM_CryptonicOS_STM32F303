@@ -122,8 +122,15 @@ void IdleFunc()
 	int u;
 	x=50;
 	y=10;
-	z=99;
+	//__disable_irq();
+	DisableAllInterrupts();
+
+	//__disable_fault_irq();
+	HAL_UART_Transmit(&huart2,(uint8_t *) "HELLO",sizeof("HELLO"),1000);
+	__enable_irq();
+	//EnableAllInterrupts();
 	uint8_t st = ActivateTask(Task1);
+	z=99;
 	int f ;
 	f = y + x;
 	//SetEvent(Task2,Event1);
@@ -134,6 +141,7 @@ void IdleFunc()
 	return;
 }
 /* USER CODE END PFP */
+
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
@@ -143,15 +151,12 @@ void IdleFunc()
   * @brief  The application entry point.
   * @retval int
   */
-//int temp10()
-//{
-//	return 10;
-//}
-
 int main(void)
 {
+  /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
+
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
@@ -172,7 +177,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  __HAL_UART_ENABLE_IT(&huart2,UART_IT_TXE);
  // int x  = temp10();
 
 
@@ -287,6 +292,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */

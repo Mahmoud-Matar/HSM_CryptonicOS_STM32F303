@@ -9,6 +9,8 @@
 #include "ResourceConfig.h"
 #include "OSExecutionControlConfig.h"
 
+struct ISR* ISRPCB[MAX_ISRs];
+ISRType Running_ISR_ID;
 
 TaskType RunningTaskID=INVALID_TASK;
 TaskType PreTaskID = INVALID_TASK;
@@ -103,7 +105,7 @@ struct Task task1 = {
     .Activation_Request = 1,
     .Reasourses_Occupied = 0,
     .Extended = 0,
-    .EventMask = { {'Event1', 'Event2', 'Event3'},0 , 0},
+    .EventMask = { (Event1 | Event2 | Event3),0 , 0},
 	.Last_Running_Resource = INVALID_RESOURCE,
     .Needed_Resources = { &resource0,&resource1 }
 };
@@ -126,7 +128,7 @@ struct Task task2 = {
     .Activation_Request = 1,
     .Reasourses_Occupied = 0,
     .Extended = 1,
-    .EventMask = { {'Event3', 'Event2'},0 , 0},
+    .EventMask = { (Event3|Event2),0 , 0},
 	.Last_Running_Resource = INVALID_RESOURCE,
     .Needed_Resources = { &resource0,&resource1 }
 };
@@ -153,7 +155,15 @@ struct Task idle = {
 	.Last_Running_Resource = INVALID_RESOURCE,
     .Needed_Resources = INVALID_RESOURCE
 };
+void USART2_Func();
+struct ISR isr0 = {
+		.ID = 38,
+		.Priority = 5,
+		.Category = 2,
+		.Needed_Resources = INVALID_RESOURCE,
+		.Prev_Resource = INVALID_RESOURCE
 
+};
 struct Task* OsTasksPCB[MAX_TASKS]={
     
     &task0,
