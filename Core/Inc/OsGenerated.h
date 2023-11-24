@@ -9,19 +9,19 @@
 #include "ResourceConfig.h"
 #include "OSExecutionControlConfig.h"
 
-struct ISR* ISRPCB[MAX_ISRs];
+
 ISRType Running_ISR_ID;
 
 TaskType RunningTaskID=INVALID_TASK;
 TaskType PreTaskID = INVALID_TASK;
 uint8_t Queue_Size;
 struct Ready_List Ready_Queue;
-struct Ready_Entry Ready_Entries[MAX_TASKS];
+struct Ready_Entry Ready_Entries[MAX_TASKS+100];
 AppModeType ActiveAppMode;
 uint8_t Active_Hooks = INVALID_HOOK;
 ISRType Active_ISR_Disable_Type = ISR_Disable_Type_NoDisable;
 uint8_t ISR_Suspend_Counter = 0;
-
+ISRType Running_ISR_Count = 0;
 
 
 #define Event1 1
@@ -157,14 +157,16 @@ struct Task idle = {
 	.Last_Running_Resource = INVALID_RESOURCE,
     .Needed_Resources = INVALID_RESOURCE
 };
-void USART2_Func();
 struct ISR isr0 = {
-		.ID = 38,
+		.ID = USART2_IRQn,
 		.Priority = 5,
 		.Category = 2,
 		.Needed_Resources = INVALID_RESOURCE,
 		.Prev_Resource = INVALID_RESOURCE
 
+};
+struct ISR* ISRPCB[MAX_ISRs] = {
+		[USART2_IRQn] = &isr0
 };
 struct Task* OsTasksPCB[MAX_TASKS]={
     

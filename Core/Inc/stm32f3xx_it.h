@@ -20,7 +20,7 @@
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F3xx_IT_H
 #define __STM32F3xx_IT_H
-
+#include "Defines.h"
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -55,7 +55,14 @@ void SVC_Handler(void);
 void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
+void I2C1_EV_IRQHandler(void);
+void I2C1_ER_IRQHandler(void);
+void I2C2_EV_IRQHandler(void);
+void I2C2_ER_IRQHandler(void);
+void SPI1_IRQHandler(void);
 void USART2_IRQHandler(void);
+void USART3_IRQHandler(void);
+void SPI3_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */

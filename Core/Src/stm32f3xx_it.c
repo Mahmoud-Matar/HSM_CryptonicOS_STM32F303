@@ -20,7 +20,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f3xx_it.h"
-
+#include "Externs.h"
+#include "InterruptHandling.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -56,7 +57,12 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern I2C_HandleTypeDef hi2c1;
+extern I2C_HandleTypeDef hi2c2;
+extern SPI_HandleTypeDef hspi1;
+extern SPI_HandleTypeDef hspi3;
 extern UART_HandleTypeDef huart2;
+extern UART_HandleTypeDef huart3;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -152,7 +158,6 @@ void SVC_Handler(void)
 				  	  	"MSR CONTROL, r10;"
 				  );
   /* USER CODE END SVCall_IRQn 0 */
-
   /* USER CODE BEGIN SVCall_IRQn 1 */
 
   /* USER CODE END SVCall_IRQn 1 */
@@ -206,20 +211,180 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles I2C1 event global interrupt / I2C1 wake-up interrupt through EXTI line 23.
+  */
+void I2C1_EV_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
+	Running_ISR_Count++;
+	if(ISRPCB[I2C1_EV_IRQn]->Category==ISR_CAT_2)
+		 {
+		I2C1_EV_ISR();
+		 }
+	  else
+	  	 {
+		 //CAT1 Body
+	  	 }
+  /* USER CODE END I2C1_EV_IRQn 0 */
+  HAL_I2C_EV_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
+
+  /* USER CODE END I2C1_EV_IRQn 1 */
+}
+
+/**
+  * @brief This function handles I2C1 error interrupt.
+  */
+void I2C1_ER_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C1_ER_IRQn 0 */
+	if(ISRPCB[I2C1_ER_IRQn]->Category==ISR_CAT_2)
+		 {
+		I2C1_ER_ISR();
+		 }
+	  else
+	  	 {
+		 //CAT1 Body
+	  	 }
+  /* USER CODE END I2C1_ER_IRQn 0 */
+  HAL_I2C_ER_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_ER_IRQn 1 */
+
+  /* USER CODE END I2C1_ER_IRQn 1 */
+}
+
+/**
+  * @brief This function handles I2C2 event global interrupt / I2C2 wake-up interrupt through EXTI line 24.
+  */
+void I2C2_EV_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C2_EV_IRQn 0 */
+	if(ISRPCB[I2C2_EV_IRQn]->Category==ISR_CAT_2)
+			 {
+			I2C2_EV_ISR();
+			 }
+		  else
+		  	 {
+			 //CAT1 Body
+		  	 }
+  /* USER CODE END I2C2_EV_IRQn 0 */
+  HAL_I2C_EV_IRQHandler(&hi2c2);
+  /* USER CODE BEGIN I2C2_EV_IRQn 1 */
+  Running_ISR_Count--;
+  /* USER CODE END I2C2_EV_IRQn 1 */
+}
+
+/**
+  * @brief This function handles I2C2 error interrupt.
+  */
+void I2C2_ER_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C2_ER_IRQn 0 */
+	Running_ISR_Count++;
+	if(ISRPCB[I2C2_ER_IRQn]->Category==ISR_CAT_2)
+			 {
+			I2C2_ER_ISR();
+			 }
+		  else
+		  	 {
+			 //CAT1 Body
+		  	 }
+  /* USER CODE END I2C2_ER_IRQn 0 */
+  HAL_I2C_ER_IRQHandler(&hi2c2);
+  /* USER CODE BEGIN I2C2_ER_IRQn 1 */
+  Running_ISR_Count--;
+  /* USER CODE END I2C2_ER_IRQn 1 */
+}
+
+/**
+  * @brief This function handles SPI1 global interrupt.
+  */
+void SPI1_IRQHandler(void)
+{
+  /* USER CODE BEGIN SPI1_IRQn 0 */
+	Running_ISR_Count++;
+	if(ISRPCB[SPI1_IRQn]->Category==ISR_CAT_2)
+			 {
+				SPI1_ISR();
+			 }
+		  else
+		  	 {
+			 //CAT1 Body
+		  	 }
+  /* USER CODE END SPI1_IRQn 0 */
+  HAL_SPI_IRQHandler(&hspi1);
+  /* USER CODE BEGIN SPI1_IRQn 1 */
+  Running_ISR_Count--;
+  /* USER CODE END SPI1_IRQn 1 */
+}
+
+/**
   * @brief This function handles USART2 global interrupt / USART2 wake-up interrupt through EXTI line 26.
   */
 void USART2_IRQHandler(void)
 {
   /* USER CODE BEGIN USART2_IRQn 0 */
-
-  /* USER CODE END USART2_IRQn 0 */
+	Running_ISR_Count++;
+  if(ISRPCB[USART2_IRQn]->Category==ISR_CAT_2)
+	 {
+	  USART2_ISR();
+	 }
+  else
+  	 {
+	 //CAT1 Body
+  	 }
   HAL_UART_IRQHandler(&huart2);
+
+  Running_ISR_Count--;
+  /* USER CODE END USART2_IRQn 0 */
+
   /* USER CODE BEGIN USART2_IRQn 1 */
-  if(ISRPCB[USART2_IRQn].Category==2)
-  {
-	//ActivateTask(USART2_IRQn);
-  }
+
   /* USER CODE END USART2_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USART3 global interrupt / USART3 wake-up interrupt through EXTI line 28.
+  */
+void USART3_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART3_IRQn 0 */
+	Running_ISR_Count++;
+	 if(ISRPCB[USART3_IRQn]->Category==ISR_CAT_2)
+		 {
+		  USART3_ISR();
+		 }
+	  else
+	  	 {
+		 //CAT1 Body
+	  	 }
+  /* USER CODE END USART3_IRQn 0 */
+  HAL_UART_IRQHandler(&huart3);
+  /* USER CODE BEGIN USART3_IRQn 1 */
+  Running_ISR_Count--;
+  /* USER CODE END USART3_IRQn 1 */
+}
+
+/**
+  * @brief This function handles SPI3 global interrupt.
+  */
+void SPI3_IRQHandler(void)
+{
+  /* USER CODE BEGIN SPI3_IRQn 0 */
+	Running_ISR_Count++;
+	if(ISRPCB[SPI3_IRQn]->Category==ISR_CAT_2)
+				 {
+					SPI3_ISR();
+				 }
+			  else
+			  	 {
+				 //CAT1 Body
+			  	 }
+  /* USER CODE END SPI3_IRQn 0 */
+  HAL_SPI_IRQHandler(&hspi3);
+  /* USER CODE BEGIN SPI3_IRQn 1 */
+  Running_ISR_Count--;
+  /* USER CODE END SPI3_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

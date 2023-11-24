@@ -53,6 +53,8 @@ void OS_TerminateTask(void)
 
 void OS_Schedule(void)
 {
+	if(Running_ISR_Count!=0)
+		return;
 	PreTaskID=RunningTaskID;
 	if (RunningTaskID == INVALID_TASK)
 	{
@@ -65,6 +67,7 @@ void OS_Schedule(void)
 		if(OsTasksPCB[RunningTaskID]->first ==0)
 					{
 						OsTasksPCB[RunningTaskID]->first = 1;
+
 						LOADCTX_FIRST;
 					}
 					else
