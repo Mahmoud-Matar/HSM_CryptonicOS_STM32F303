@@ -2,6 +2,10 @@
 #define Headers_APIs_Headers_ISRs_H
 
 #include "Defines.h"
+#include "stm32f3xx_hal.h"
+
+
+
 
 void EnableAllInterrupts(void);
 void DisableAllInterrupts(void);

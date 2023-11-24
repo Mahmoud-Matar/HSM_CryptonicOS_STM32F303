@@ -12,6 +12,8 @@ extern struct ISR* ISRPCB[MAX_ISRs];
 extern uint8_t Active_Hooks;
 extern TaskType RunningTaskID;
 extern ISRType Running_ISR_ID;
+extern ISRType Active_ISR_Disable_Type;
+extern uint8_t ISR_Suspend_Counter;
 
 
 extern TaskType PreTaskID;

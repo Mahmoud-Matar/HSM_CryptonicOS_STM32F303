@@ -18,7 +18,9 @@ uint8_t Queue_Size;
 struct Ready_List Ready_Queue;
 struct Ready_Entry Ready_Entries[MAX_TASKS];
 AppModeType ActiveAppMode;
-uint8_t Active_Hooks;
+uint8_t Active_Hooks = INVALID_HOOK;
+ISRType Active_ISR_Disable_Type = ISR_Disable_Type_NoDisable;
+uint8_t ISR_Suspend_Counter = 0;
 
 
 

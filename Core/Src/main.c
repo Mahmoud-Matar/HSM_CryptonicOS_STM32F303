@@ -127,8 +127,8 @@ void IdleFunc()
 
 	//__disable_fault_irq();
 	HAL_UART_Transmit(&huart2,(uint8_t *) "HELLO",sizeof("HELLO"),1000);
-	__enable_irq();
-	//EnableAllInterrupts();
+	//__enable_irq();
+	EnableAllInterrupts();
 	uint8_t st = ActivateTask(Task1);
 	z=99;
 	int f ;
