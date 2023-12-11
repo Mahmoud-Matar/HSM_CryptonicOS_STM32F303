@@ -162,11 +162,6 @@ int main(void)
 
 
       StartOS(OSDEFAULTAPPMODE);
-//     GetTaskID(&test);
-//      ActivateTask(Task1);
-//      GetTaskID(&test);
-//      ActivateTask(Task2);
-//      GetTaskID(&test);
   /* USER CODE END 2 */
 
   /* Infinite loop */
