@@ -20,10 +20,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f3xx_it.h"
-#include "Externs.h"
-#include "InterruptHandling.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include "Externs.h"
+#include "InterruptHandling.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -152,11 +153,11 @@ void SVC_Handler(void)
 {
   /* USER CODE BEGIN SVCall_IRQn 0 */
 
-	__asm volatile( 	"CPSID i;"
-						"MRS r10, CONTROL;"
-				  	  	"BIC r10, r10, #1;"
-				  	  	"MSR CONTROL, r10;"
-				  );
+//	__asm volatile( 	"CPSID i;"
+//						"MRS r10, CONTROL;"
+//				  	  	"BIC r10, r10, #1;"
+//				  	  	"MSR CONTROL, r10;"
+//				  );
   /* USER CODE END SVCall_IRQn 0 */
   /* USER CODE BEGIN SVCall_IRQn 1 */
 
@@ -211,6 +212,52 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles EXTI line0 interrupt.
+  */
+void EXTI0_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI0_IRQn 0 */
+	Running_ISR_Count++;
+		if(ISRPCB[EXTI0_IRQn]->Category==ISR_CAT_2)
+			 {
+			EXTI0_ISR();
+			 }
+		  else
+		  	 {
+			 //CAT1 Body
+		  	 }
+		Running_ISR_Count--;
+  /* USER CODE END EXTI0_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+  /* USER CODE BEGIN EXTI0_IRQn 1 */
+
+  /* USER CODE END EXTI0_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line3 interrupt.
+  */
+void EXTI3_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI3_IRQn 0 */
+	Running_ISR_Count++;
+		if(ISRPCB[EXTI3_IRQn]->Category==ISR_CAT_2)
+			 {
+			EXTI3_ISR();
+			 }
+		  else
+		  	 {
+			 //CAT1 Body
+		  	 }
+		Running_ISR_Count--;
+  /* USER CODE END EXTI3_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_3);
+  /* USER CODE BEGIN EXTI3_IRQn 1 */
+
+  /* USER CODE END EXTI3_IRQn 1 */
+}
+
+/**
   * @brief This function handles I2C1 event global interrupt / I2C1 wake-up interrupt through EXTI line 23.
   */
 void I2C1_EV_IRQHandler(void)
@@ -225,6 +272,7 @@ void I2C1_EV_IRQHandler(void)
 	  	 {
 		 //CAT1 Body
 	  	 }
+	Running_ISR_Count--;
   /* USER CODE END I2C1_EV_IRQn 0 */
   HAL_I2C_EV_IRQHandler(&hi2c1);
   /* USER CODE BEGIN I2C1_EV_IRQn 1 */
@@ -238,6 +286,7 @@ void I2C1_EV_IRQHandler(void)
 void I2C1_ER_IRQHandler(void)
 {
   /* USER CODE BEGIN I2C1_ER_IRQn 0 */
+	Running_ISR_Count++;
 	if(ISRPCB[I2C1_ER_IRQn]->Category==ISR_CAT_2)
 		 {
 		I2C1_ER_ISR();
@@ -246,6 +295,7 @@ void I2C1_ER_IRQHandler(void)
 	  	 {
 		 //CAT1 Body
 	  	 }
+	Running_ISR_Count--;
   /* USER CODE END I2C1_ER_IRQn 0 */
   HAL_I2C_ER_IRQHandler(&hi2c1);
   /* USER CODE BEGIN I2C1_ER_IRQn 1 */
@@ -259,6 +309,7 @@ void I2C1_ER_IRQHandler(void)
 void I2C2_EV_IRQHandler(void)
 {
   /* USER CODE BEGIN I2C2_EV_IRQn 0 */
+	Running_ISR_Count++;
 	if(ISRPCB[I2C2_EV_IRQn]->Category==ISR_CAT_2)
 			 {
 			I2C2_EV_ISR();
@@ -333,11 +384,16 @@ void USART2_IRQHandler(void)
   	 {
 	 //CAT1 Body
   	 }
-  HAL_UART_IRQHandler(&huart2);
+  //uint8_t c = 's';
+  //HAL_UART_Transmit(&huart2, &c, sizeof(c) , 1000);
+
+  //HAL_UART_IRQHandler(&huart2);
 
   Running_ISR_Count--;
+  uint8_t c;
+  //HAL_UART_Receive(&huart2, &c, 1 , 1000);
   /* USER CODE END USART2_IRQn 0 */
-
+  HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
 
   /* USER CODE END USART2_IRQn 1 */

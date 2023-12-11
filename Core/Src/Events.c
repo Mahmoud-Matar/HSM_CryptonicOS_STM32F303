@@ -56,7 +56,7 @@ StatusType SetEvent(TaskType TaskID, EventMaskType ActivatedEvents)
 StatusType WaitEvent(EventMaskType EventMask)
 {
 	GlobalEventMask = EventMask;
-	SAVECTX(56);
+	SAVECTX(48);
 	EventMask = GlobalEventMask;
 //	SYSTEM_STACK;
 	StatusType StatusMsg = E_OK;
@@ -98,7 +98,10 @@ StatusType WaitEvent(EventMaskType EventMask)
     }
     // delete from ready queue
      // schedule next task
+
     OsTasksPCB[PreTaskID]->retStatus = StatusMsg;
+	if(Running_ISR_Count!=0)
+			return E_OK;
     	if(OsTasksPCB[RunningTaskID]->first ==0)
     						{
     							OsTasksPCB[RunningTaskID]->first = 1;

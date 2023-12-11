@@ -30,6 +30,7 @@ void OS_TerminateTask(void)
 {
 
 	// Context_Switch();
+	OsTasksPCB[RunningTaskID]->first = 0;
 	if ((Active_Hooks & PostTaskhook) != 0)
 	{
 		PostTaskHook();
@@ -37,6 +38,7 @@ void OS_TerminateTask(void)
 	if (OsTasksPCB[RunningTaskID]->Activation_Record == 1)
 	{
 		OsTasksPCB[RunningTaskID]->State = SUSPENDED;
+
 		OS_Delete(RunningTaskID);
 		RunningTaskID = INVALID_TASK;
 	}
@@ -53,9 +55,9 @@ void OS_TerminateTask(void)
 
 void OS_Schedule(void)
 {
+	PreTaskID=RunningTaskID;
 	if(Running_ISR_Count!=0)
 		return;
-	PreTaskID=RunningTaskID;
 	if (RunningTaskID == INVALID_TASK)
 	{
 		Ready_Queue.Head->task->Started = START_T;

@@ -122,8 +122,8 @@ struct Task task2 = {
     .current_pc = &Task3Func,
     .ID = 2,
     .State = SUSPENDED,
-    .CONFIG_PRIORITY = 1,
-    .Priority = 1,
+    .CONFIG_PRIORITY = 9,
+    .Priority = 9,
     .F_PREEM = TASK_FULL,
     .Preeimpted = 0,
     .Activation_Record = 0,
@@ -165,8 +165,26 @@ struct ISR isr0 = {
 		.Prev_Resource = INVALID_RESOURCE
 
 };
+struct ISR isr1 = {
+		.ID = EXTI0_IRQn,
+		.Priority = 5,
+		.Category = 2,
+		.Needed_Resources = INVALID_RESOURCE,
+		.Prev_Resource = INVALID_RESOURCE
+
+};
+struct ISR isr2 = {
+		.ID = EXTI3_IRQn,
+		.Priority = 5,
+		.Category = 2,
+		.Needed_Resources = INVALID_RESOURCE,
+		.Prev_Resource = INVALID_RESOURCE
+
+};
 struct ISR* ISRPCB[MAX_ISRs] = {
-		[USART2_IRQn] = &isr0
+		[USART2_IRQn] = &isr0,
+		[EXTI0_IRQn] = &isr1,
+		[EXTI3_IRQn] = &isr2
 };
 struct Task* OsTasksPCB[MAX_TASKS]={
     

@@ -76,20 +76,13 @@ void ResumeAllInterrupts(void)
 			else
 			{
 				Active_ISR_Disable_Type = ISR_Disable_Type_SuspendAll;
-
 			}
-
 		}
-
 	}
 	else
 	{
 		CS_OFF
 	}
-
-
-
-
 }
 
 void SuspendAllInterrupts(void)
@@ -233,3 +226,159 @@ bool CheckPending(void){
 			}
 	return false;
 }
+
+void USART2_Config(){
+	SAVECTX(0);
+	USART2_IRQHandler();
+	OS_Schedule();
+	if(OsTasksPCB[RunningTaskID]->first ==0)
+		{
+			OsTasksPCB[RunningTaskID]->first = 1;
+			LOADCTX_FIRST;
+		}
+		else
+		{
+		   LOADCTX;
+		}
+
+}
+void USART3_Config(){
+	SAVECTX(0);
+	USART3_IRQHandler();
+	OS_Schedule();
+	if(OsTasksPCB[RunningTaskID]->first ==0)
+			{
+				OsTasksPCB[RunningTaskID]->first = 1;
+				LOADCTX_FIRST;
+			}
+			else
+			{
+			   LOADCTX;
+			}
+
+}
+void I2C1_EV_Config(){
+	SAVECTX(0);
+	I2C1_EV_IRQHandler();
+	OS_Schedule();
+	if(OsTasksPCB[RunningTaskID]->first ==0)
+			{
+				OsTasksPCB[RunningTaskID]->first = 1;
+				LOADCTX_FIRST;
+			}
+			else
+			{
+			   LOADCTX;
+			}
+}
+void I2C1_ER_Config(){
+	SAVECTX(0);
+	I2C1_ER_IRQHandler();
+	OS_Schedule();
+	if(OsTasksPCB[RunningTaskID]->first ==0)
+			{
+				OsTasksPCB[RunningTaskID]->first = 1;
+				LOADCTX_FIRST;
+			}
+			else
+			{
+			   LOADCTX;
+			}
+}
+void I2C2_EV_Config(){
+	SAVECTX(0);
+	I2C2_EV_IRQHandler();
+	OS_Schedule();
+	if(OsTasksPCB[RunningTaskID]->first ==0)
+			{
+				OsTasksPCB[RunningTaskID]->first = 1;
+				LOADCTX_FIRST;
+			}
+			else
+			{
+			   LOADCTX;
+			}
+}
+void I2C2_ER_Config(){
+	SAVECTX(0);
+	I2C2_ER_IRQHandler();
+	OS_Schedule();
+	if(OsTasksPCB[RunningTaskID]->first ==0)
+			{
+				OsTasksPCB[RunningTaskID]->first = 1;
+				LOADCTX_FIRST;
+			}
+			else
+			{
+			   LOADCTX;
+			}
+
+}
+void SPI1_Config(){
+	SAVECTX(0);
+	SPI1_IRQHandler();
+	OS_Schedule();
+	if(OsTasksPCB[RunningTaskID]->first ==0)
+			{
+				OsTasksPCB[RunningTaskID]->first = 1;
+				LOADCTX_FIRST;
+			}
+			else
+			{
+			   LOADCTX;
+			}
+
+}
+void SPI3_Config(){
+	SAVECTX(0);
+	SPI3_IRQHandler();
+	OS_Schedule();
+	if(OsTasksPCB[RunningTaskID]->first ==0)
+			{
+				OsTasksPCB[RunningTaskID]->first = 1;
+				LOADCTX_FIRST;
+			}
+			else
+			{
+			   LOADCTX;
+			}
+}
+void EXTI3_Config(){
+
+
+	SAVECTX(0);
+	EXTI3_IRQHandler();
+		OS_Schedule();
+		if(OsTasksPCB[RunningTaskID]->first ==0)
+				{
+					OsTasksPCB[RunningTaskID]->first = 1;
+					LOADCTX_FIRST;
+				}
+				else
+				{
+				   LOADCTX;
+				}
+
+
+
+}
+void EXTI0_Config(){
+
+
+	SAVECTX(0);
+	EXTI0_IRQHandler();
+		OS_Schedule();
+		if(OsTasksPCB[RunningTaskID]->first ==0)
+				{
+					OsTasksPCB[RunningTaskID]->first = 1;
+					LOADCTX_FIRST;
+				}
+				else
+				{
+				   LOADCTX;
+				}
+
+
+
+}
+

@@ -50,6 +50,9 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
+int z;
+int x;
+int y;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -65,95 +68,47 @@ static void MX_USART3_UART_Init(void);
 
 void Task1Func()
 {
-	int x;
-	int y;
-	int z;
-	x = 5;
-	y = 6;
-	z = 9;
-
+	x = 12;
+	y = 5;
+	delayMs();
 	uint8_t st;
-
-	st = GetResource(R1);
-
-	st =ActivateTask(Task2);
-
-	int a;
-	a = x + y;
-
-	st = ReleaseResource(R1);
-
-	x= a + z;
-
+	st = WaitEvent(Event1);
+	delayMs();
+	z = x * y;
 	st = TerminateTask();
-
-
-	//WaitEvent(Event1);
-//	    int x;
-//		int y;
-//		int z;
-//		x=1;
-//		y=2;
-//		z=3;
-//		int g;
-//		g = 5;
-//	ActivateTask(Task2);
-//	WaitEvent(Event1);
-//
-//	x= 99;
-//	int q;
-//	q = x + y + z;
-//	TerminateTask();
-
-
-	//ChainTask(Task2);
 	return;
 }
 
 void Task2Func()
 {
-//	int x;
-//		x = 10;
-////	SetEvent(Task1,Event1);
-//	WaitEvent(Event1);
-//	int y;
-//	y = x;
+	delayMs();
 	uint8_t st;
+	ActivateTask(Task3);
+	SetEvent(Task1,Event1);
 	st = TerminateTask();
 }
 void Task3Func()
 {
-	int x;
-	x = 30;
+	uint8_t st;
+	delayMs();
+	st = TerminateTask();
 }
 
 void IdleFunc()
 {
-	int x;
-	int y;
-	int z;
-	int u;
-	x=50;
-	y=10;
-	//__disable_irq();
-	  __HAL_UART_ENABLE_IT(&huart2,UART_IT_TXE);
-
-	//DisableAllInterrupts();
-
-	//__disable_fault_irq();
-	HAL_UART_Transmit(&huart2,(uint8_t *) "HELLO",sizeof("HELLO"),1000);
-	//__enable_irq();
-	//EnableAllInterrupts();
-	uint8_t st = ActivateTask(Task1);
-	z=99;
-	int f ;
-	f = y + x;
-	//SetEvent(Task2,Event1);
 	while(1)
 	{
-
 	}
 	return;
+}
+void delayMs(){ // 1ms/n only
+	int temp;
+	for (int i = 0;  i < 1000000; i++)
+			{
+				temp = 1*5;
+			}
+
+
 }
 /* USER CODE END PFP */
 
@@ -197,8 +152,11 @@ int main(void)
   MX_SPI3_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
- // int x  = temp10();
 
+ __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
+  //__HAL_UART_ENABLE_IT(&huart2,UART_IT_TXE);
+
+ // int x  = temp10();
 
 
 
@@ -521,6 +479,7 @@ static void MX_USART3_UART_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
 /* USER CODE END MX_GPIO_Init_1 */
 
@@ -529,6 +488,25 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin : PC0 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PB3 */
+  GPIO_InitStruct.Pin = GPIO_PIN_3;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI3_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

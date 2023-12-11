@@ -152,10 +152,10 @@ g_pfnVectors:
 	.word	RTC_WKUP_IRQHandler
 	.word	FLASH_IRQHandler
 	.word	RCC_IRQHandler
-	.word	EXTI0_IRQHandler
+	.word	EXTI0_Config
 	.word	EXTI1_IRQHandler
 	.word	EXTI2_TSC_IRQHandler
-	.word	EXTI3_IRQHandler
+	.word	EXTI3_Config
 	.word	EXTI4_IRQHandler
 	.word	DMA1_Channel1_IRQHandler
 	.word	DMA1_Channel2_IRQHandler
@@ -177,15 +177,15 @@ g_pfnVectors:
 	.word	TIM2_IRQHandler
 	.word	TIM3_IRQHandler
 	.word	TIM4_IRQHandler
-	.word	I2C1_EV_IRQHandler
-	.word	I2C1_ER_IRQHandler
-	.word	I2C2_EV_IRQHandler
-	.word	I2C2_ER_IRQHandler
-	.word	SPI1_IRQHandler
+	.word	I2C1_EV_Config
+	.word	I2C1_ER_Config
+	.word	I2C2_EV_Config
+	.word	I2C2_ER_Config
+	.word	SPI1_Config
 	.word	SPI2_IRQHandler
 	.word	USART1_IRQHandler
-	.word	USART2_IRQHandler
-	.word	USART3_IRQHandler
+	.word	USART2_Config
+	.word	USART3_Config
 	.word	EXTI15_10_IRQHandler
 	.word	RTC_Alarm_IRQHandler
 	.word	USBWakeUp_IRQHandler
@@ -197,7 +197,7 @@ g_pfnVectors:
 	.word	FMC_IRQHandler
 	.word	0
 	.word	0
-	.word	SPI3_IRQHandler
+	.word	SPI1_Config
 	.word	UART4_IRQHandler
 	.word	UART5_IRQHandler
 	.word	TIM6_DAC_IRQHandler

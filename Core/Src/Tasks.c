@@ -37,6 +37,8 @@ StatusType ActivateTask(TaskType TaskID)
 		}
 	}
 	OsTasksPCB[PreTaskID]->retStatus = StatusMsg;
+	if(Running_ISR_Count!=0)
+			return E_OK;
 	if(OsTasksPCB[RunningTaskID]->first ==0)
 						{
 							OsTasksPCB[RunningTaskID]->first = 1;
@@ -139,6 +141,8 @@ StatusType ChainTask(TaskType TaskID)
 
 	}
 	OsTasksPCB[PreTaskID]->retStatus = StatusMsg;
+	if(Running_ISR_Count!=0)
+			return E_OK;
 	if(OsTasksPCB[RunningTaskID]->first ==0)
 						{
 							OsTasksPCB[RunningTaskID]->first = 1;
